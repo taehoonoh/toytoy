@@ -1,0 +1,234 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+    th{ 
+        cursor: pointer;
+        color:#fff;
+        
+            }
+    tr{
+        text-align: center;
+    }
+</style>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <h1>전국트럭 얼마에요</h1>
+                <input id="search-input" class="form-control" type="text"
+                placeholder="배송지역을 입력하세요">
+            </div>
+        </div>
+    </div>
+
+
+<table class="table table-striped">
+    <tr  class="bg-info">
+        <th  class="bg-info" data-colname="name" data-order="desc">지역 &#9650</th>
+        <th  data-colname="charge" data-order="desc">금액(만원) &#9650</th>
+        <th  data-colname="car" data-order="desc">차종 &#9650</th>
+        <th  data-colname="km" data-order="desc">거리 &#9650</th>
+    </tr>
+    <tbody id="myTable">
+        
+    </tbody>
+</table>
+
+
+<script>
+var myArray = [
+    {'name':'서울', 'charge':'4', 'car':'1톤 반차', 'km':'13km'},
+    {'name':'서울', 'charge':'15', 'car':'1톤 독차'},
+    {'name':'인천', 'charge':'4', 'car':'1톤 반차'},
+    {'name':'인천', 'charge':'17', 'car':'1톤 독차'},
+    {'name':'안산', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'안산', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'수원', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'수원', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'포천', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'포천', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'구리', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'구리', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'성남', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'성남', 'charge':'20', 'car':'1톤 독차'},
+    {'name':'광주', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'광주', 'charge':'8', 'car':'1톤 독차'},
+    {'name':'이천', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'이천', 'charge':'8', 'car':'1톤 독차'},
+    {'name':'용인', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'용인', 'charge':'8', 'car':'1톤 독차'},
+    {'name':'남양주', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'남양주', 'charge':'8', 'car':'1톤 독차'},
+    {'name':'군포', 'charge':'6', 'car':'1톤 반차'},
+    {'name':'군포', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'양평', 'charge':'6', 'car':'1톤 반차'},
+    {'name':'양평', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'김포', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'김포', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'안양', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'안양', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'화성', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'화성', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'파주', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'파주', 'charge':'25', 'car':'1톤 독차'},
+    {'name':'평택', 'charge':'5', 'car':'1톤 반차'},
+    {'name':'평택', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'천안', 'charge':'7', 'car':'1톤 반차'},
+    {'name':'천안', 'charge':'15', 'car':'1톤 독차'},
+    {'name':'서천', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'서천', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'논산', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'논산', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'보령', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'보령', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'아산', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'아산', 'charge':'12', 'car':'1톤 독차'},
+    {'name':'공주', 'charge':'7', 'car':'1톤 반차'},
+    {'name':'공주', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'당진', 'charge':'8', 'car':'1톤 반차'},
+    {'name':'당진', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'서산', 'charge':'8', 'car':'1톤 반차'},
+    {'name':'서산', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'부여', 'charge':'8', 'car':'1톤 반차'},
+    {'name':'부여', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'금산', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'금산', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'예산', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'예산', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'태안', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'태안', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'세종', 'charge':'7', 'car':'1톤 반차'},
+    {'name':'대전', 'charge':'13', 'car':'1톤 독차'},
+    {'name':'제천', 'charge':'9', 'car':'1톤 반차'},
+    {'name':'제천', 'charge':'12', 'car':'1톤 독차'},
+    {'name':'청주', 'charge':'8', 'car':'1톤 반차'},
+    {'name':'청주', 'charge':'15', 'car':'1톤 독차'},
+    {'name':'철원', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'철원', 'charge':'12', 'car':'1톤 독차'},
+    {'name':'강릉', 'charge':'11', 'car':'1톤 반차'},
+    {'name':'강릉', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'춘천', 'charge':'8', 'car':'1톤 반차'},
+    {'name':'춘천', 'charge':'14', 'car':'1톤 독차'},
+    {'name':'원주', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'원주', 'charge':'10', 'car':'1톤 독차'},
+    {'name':'전주', 'charge':'12', 'car':'1톤 반차'},
+    {'name':'전주', 'charge':'18', 'car':'1톤 독차'},
+    {'name':'익산', 'charge':'12', 'car':'1톤 반차'},
+    {'name':'익산', 'charge':'18', 'car':'1톤 독차'},
+    {'name':'군산', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'군산', 'charge':'20', 'car':'1톤 독차'},
+    {'name':'고창', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'고창', 'charge':'20', 'car':'1톤 독차'},
+    {'name':'정읍', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'정읍', 'charge':'17', 'car':'1톤 독차'},
+    {'name':'무안', 'charge':'13', 'car':'1톤 반차'},
+    {'name':'무안', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'광주(전남)', 'charge':'13', 'car':'1톤 반차'},
+    {'name':'광주(전남)', 'charge':'23', 'car':'1톤 독차'},
+    {'name':'순천', 'charge':'15', 'car':'1톤 반차'},
+    {'name':'순천', 'charge':'20', 'car':'1톤 독차'},
+    {'name':'영광', 'charge':'14', 'car':'1톤 반차'},
+    {'name':'영광', 'charge':'18', 'car':'1톤 독차'},
+    {'name':'장성', 'charge':'14', 'car':'1톤 반차'},
+    {'name':'장성', 'charge':'18', 'car':'1톤 독차'},
+    {'name':'여수', 'charge':'15', 'car':'1톤 반차'},
+    {'name':'여수', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'나주', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'나주', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'영암', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'영암', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'화순', 'charge':'18', 'car':'1톤 반차'},
+    {'name':'화순', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'대구', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'대구', 'charge':'17', 'car':'1톤 독차'},
+    {'name':'울산', 'charge':'0', 'car':'1톤 반차'},
+    {'name':'울산', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'칠곡', 'charge':'12', 'car':'1톤 반차'},
+    {'name':'칠곡', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'포항', 'charge':'15', 'car':'1톤 반차'},
+    {'name':'포항', 'charge':'23', 'car':'1톤 독차'},
+    {'name':'청송', 'charge':'15', 'car':'1톤 반차'},
+    {'name':'청송', 'charge':'22', 'car':'1톤 독차'},
+    {'name':'구미', 'charge':'10', 'car':'1톤 반차'},
+    {'name':'구미', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'문경', 'charge':'16', 'car':'1톤 반차'},
+    {'name':'문경', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'부산', 'charge':'13', 'car':'1톤 반차'},
+    {'name':'부산', 'charge':'32', 'car':'1.4 독차'},
+    {'name':'의령', 'charge':'13', 'car':'1톤 반차'},
+    {'name':'의령', 'charge':'0', 'car':'1톤 독차'},
+    {'name':'거제', 'charge':'16', 'car':'1톤 반차'},
+    {'name':'거제', 'charge':'27', 'car':'1톤 독차'},
+    {'name':'함안', 'charge':'12', 'car':'1톤 반차'},
+    {'name':'함안', 'charge':'0', 'car':'1톤 독차'},
+   
+]
+ $('#search-input').on('keyup',function(){
+     var value = $(this).val()
+     console.log('Value:',value)
+      var data = searchTable(value, myArray)
+      buildTable(data)
+ })
+
+buildTable(myArray)
+
+function searchTable(value, data){
+        var filteredData = []
+
+        for (var i =0; i < data.length; i++){
+            value = value.toLowerCase()
+            var name = data[i].name.toLowerCase()
+
+            if (name.includes(value)){
+                filteredData.push(data[i])
+            }
+        }
+
+        return filteredData
+}
+ $('th').on('click', function(){
+     var column = $(this).data('colname')
+     var order = $(this).data('order')
+     var text = $(this).html()
+     text = text.substring(0, text.length - 1);
+     
+     
+     
+     if (order == 'desc'){
+        myArray = myArray.sort((a, b) => a[column] > b[column] ? 1 : -1)
+        $(this).data("order","asc");
+        text += '&#9660'
+     }else{
+        myArray = myArray.sort((a, b) => a[column] < b[column] ? 1 : -1)
+        $(this).data("order","desc");
+        text += '&#9650'
+     }
+
+    $(this).html(text)
+    buildTable(myArray)
+    })
+
+
+   
+ 
+    
+function buildTable(data){
+    var table = document.getElementById('myTable')
+    table.innerHTML = ''
+    for (var i = 0; i < data.length; i++){
+        var colname = `name-${i}`
+        var colcharge = `charge-${i}`
+        var colbirth = `car-${i}`
+        var colkm = `km-${i}`
+
+        var row = `<tr>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].charge}</td>
+                        <td>${data[i].car}</td>
+                        <td>${data[i].km}</td>
+                   </tr>`
+        table.innerHTML += row
+    }
+}
+
+</script>
